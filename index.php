@@ -13,7 +13,7 @@
         
         <p>
             
-            Moku kurti statinį turinį.
+            Moku kurti statinį turinį!
             
         </p>
         
