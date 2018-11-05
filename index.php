@@ -1,16 +1,22 @@
 <html>
     
     <body>
+        <title>
+            Aš valdau HTML!
+        </title>
         
         <h1>
             
-            My first PHP page!
+         Povilas - HTML asas!
             
         </h1> 
         
-        <?php
-        echo "Hello World!4444";
-        ?>
+        <p>
+            
+            Moku kurti statinį turinį.
+            
+        </p>
+        
        
     </body>
     
