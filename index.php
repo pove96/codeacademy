@@ -1,11 +1,14 @@
+<?php
+date_default_timezone_set('Europe/Vilnius');
+?>
 <html>
     <body>
         <title>
-            <?php print 'Aš,' . date('l') . 'ir PHP'; ?>
+            PHP lydės ir <?php print 'ryt ' . date('d-M-Y', strtotime('+1 day')) ?>
         </title>
-        <h1><b>Povilas</b> - HTML <?php print 'ir PHP'; ?> asas jau nuo <?php print date('Y') . ' metų' ?> </h1> 
+        <h1><b>Povilas</b> - PHP su manim buvo ir <?php print date('G', strtotime('-1 hour')) . ' valandą' ?> </h1> 
         <p>
-            Viskas prasidėjo <?php print date('m') . 'mėnesio,' . date('d') . 'dieną' ?>
+            <?php print 'sekantys metai ' . date('Y', strtotime('+1 year')) ?> ne už kalnų!
         </p>
     </body>
 </html>
