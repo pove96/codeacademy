@@ -2,18 +2,24 @@
 <html>
     <head> 
         <style>
-            #Kvadratas{
-                position: absolute;
-                top: <?php print rand(0, 980); ?>px;
-                left: <?php print rand(0, 1820); ?>px;                  
-                width: 100px;
-                height: 100px;
-                background-color: red;
+            .class-1 {
+                color: red;
+                font-size: 100%;
+            }
+            .class-2 {
+                color: blue;
+                font-size: 100%;
+            }
+            .class-3 {
+                color: green;
+                font-size: 100%;
             }
         </style>
     <body>
-        <div id="Kvadratas">
-        </div>
+        <p class="class-<?php print rand(1, 3) ?>"> Vienas </p>
+        <p class="class-<?php print rand(1, 3) ?>"> Du </p>
+        <p class="class-<?php print rand(1, 3) ?>"> Trys </p>
+        
     </body>
 </head>
 </html>
