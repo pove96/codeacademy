@@ -1,16 +1,11 @@
-<?php
-date_default_timezone_set('Europe/Vilnius');
-?>
-<html>
-    <body>
-        <title>
-            PHP lydės ir <?php print date('Y', strtotime('+' . rand(0, 10) . 'years')); ?>
-        </title>
-        <h1>
-            <b>Povilas</b> - Galbūt turėsiu <?php print rand(1, 5); ?> vaikų!
-        </h1>
-        <p>
-            D. Trump'as nebebus prezidentu <?php print rand(2021, 2031) . ' ' . date('m d') ?>
-        </p>
+<!DOCTYPE html>
+<html lang="lt">
+    <head>
+        <meta charset="UTF-8">
+        <title>inline bbz</title>
+    </head>
+    <body style="background-color:rgb(<?php print rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) ?>);">
+        <h1 style="font-size:<?php print rand(5, 50) . 'px' ?>">Tekstas</h1>
+        <p style="color:rgb(<?php print rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) ?>)">D.Trump's nebebus prezidentu <?php print rand(2021, 2031) . ' ' . date('m d'); ?></p>
     </body>
 </html>
