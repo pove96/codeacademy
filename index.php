@@ -4,22 +4,13 @@ date_default_timezone_set('Europe/Vilnius');
 <html>
     <body>
         <title>
-            Komentarai!
+            PHP lydės ir <?php print date('Y', strtotime('+' . rand(0, 10) . 'years')); ?>
         </title>
-        <!--Pirmasis div blokas su h1 ir h2-->
-            <h1>
-                Aš pradedu!
-            </h1>
-            <h2>
-                O aš papildau!
-            </h2>
-        </div>
-        <!--<div>
-            <p>
-                Aš esu ta pana, <br>
-                kuri kalba ir kalba, <br>
-                ir kalba, ir kalba...
-            </p>
-        </div>-->
+        <h1>
+            <b>Povilas</b> - Galbūt turėsiu <?php print rand(1, 5); ?> vaikų!
+        </h1>
+        <p>
+            D. Trump'as nebebus prezidentu <?php print rand(2021, 2031) . ' ' . date('m d') ?>
+        </p>
     </body>
 </html>
