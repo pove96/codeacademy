@@ -1,10 +1,30 @@
 <?php
-$liepa_days = 31;
-$rugpjutis_days = 30;
-$rugsejis_days = 30;
-$spalis_days = 31;
-$x = $liepa_days + $rugpjutis_days + $rugsejis_days + $spalis_days + date('d');
+$sunny = rand(0, 1);
+
+if ($sunny) {
+    $class = "sauleta";
+    $text = "Sauleta blet";
+} else {
+    $class = "debesuota";
+    $text = "Debesuota blet nx";
+}
 ?>
+<style>
+    .sauleta {
+        background-image: url(https://cdn.iconscout.com/icon/free/png-256/sunny-176-781177.png);
+    }
+    .debesuota {
+        background-image: url(https://image.flaticon.com/icons/svg/164/164806.svg);
+    }
+    .paveiksliukas {
+        width: 100px;
+        height: 100px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+</style>
+
 <html>
     <head>
         <title>
@@ -12,8 +32,7 @@ $x = $liepa_days + $rugpjutis_days + $rugsejis_days + $spalis_days + date('d');
         </title>
     </head>
     <body>
-        <p>
-            <?php print "Nuo Liepos iki šiandien praėjo " . $x . " dienų" ?>
-        </p>
+        <div class="paveiksliukas <?php print $class; ?>"></div>
+        <p><?php print $text; ?></p>
     </body>
 </html>
