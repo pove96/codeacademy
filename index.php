@@ -1,6 +1,11 @@
 <?php
-$src = 'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/55b9a2ec4dab7184418b4567.png';
-$href = 'https://cdn.newsapi.com.au/image/v1/e10debce170fd18a27f0fd3f024ec81e';
+$mano_pinigai = 1000;
+$spent_per_month = 600;
+$earned_per_month = 800;
+$unknown_per_month = rand(20, 80);
+$months = 24;
+$wallet_forecast = $mano_pinigai + ($earned_per_month - $spent_per_month - $unknown_per_month) * $months;
+$data = date('D, d M Y', strtotime("+$months months"));
 ?>
 <html>
     <head>
@@ -10,15 +15,7 @@ $href = 'https://cdn.newsapi.com.au/image/v1/e10debce170fd18a27f0fd3f024ec81e';
     </head>
     <body>
         <p>
-            <img src="<?php print $src ?>">
-            <img src="<?php print $src ?>">
-            <img src="<?php print $src ?>">
-            <img src="<?php print $src ?>">
-
-            <a href="<?php print $href ?>"> Noriu valgyt!</a>
-            <a href="<?php print $href ?>"> Noriu valgyt!</a>
-            <a href="<?php print $href ?>"> Noriu valgyt!</a>
-            <a href="<?php print $href ?>"> Noriu valgyt!</a>
+            <?php print "Po" . $months . $data . " tikėtina turėsiu" . $wallet_forecast ?>
         </p>
     </body>
 </html>
