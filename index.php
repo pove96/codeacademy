@@ -1,11 +1,9 @@
 <?php
-$mano_pinigai = 1000;
-$spent_per_month = 600;
-$earned_per_month = 800;
-$unknown_per_month = rand(20, 80);
-$months = 24;
-$wallet_forecast = $mano_pinigai + ($earned_per_month - $spent_per_month - $unknown_per_month) * $months;
-$data = date('D, d M Y', strtotime("+$months months"));
+$liepa_days = 31;
+$rugpjutis_days = 30;
+$rugsejis_days = 30;
+$spalis_days = 31;
+$x = $liepa_days + $rugpjutis_days + $rugsejis_days + $spalis_days + date('d');
 ?>
 <html>
     <head>
@@ -15,7 +13,7 @@ $data = date('D, d M Y', strtotime("+$months months"));
     </head>
     <body>
         <p>
-            <?php print "Po" . $months . $data . " tikėtina turėsiu" . $wallet_forecast ?>
+            <?php print "Nuo Liepos iki šiandien praėjo " . $x . " dienų" ?>
         </p>
     </body>
 </html>
