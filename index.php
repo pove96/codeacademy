@@ -1,38 +1,33 @@
 <?php
-$sunny = rand(0, 1);
+date_default_timezone_set('Europe/Vilnius');
 
-if ($sunny) {
-    $class = "sauleta";
-    $text = "Sauleta blet";
+if (date('s') % 2 == 0) {
+    $a = 'kvadratas';
 } else {
-    $class = "debesuota";
-    $text = "Debesuota blet nx";
+    $a = 'apskritimas';
 }
 ?>
-<style>
-    .sauleta {
-        background-image: url(https://cdn.iconscout.com/icon/free/png-256/sunny-176-781177.png);
-    }
-    .debesuota {
-        background-image: url(https://image.flaticon.com/icons/svg/164/164806.svg);
-    }
-    .paveiksliukas {
-        width: 100px;
-        height: 100px;
-        background-size: contain;
-        background-repeat: no-repeat;
-    }
-
-</style>
-
 <html>
     <head>
+        <style>
+            .kvadratas {
+                background-image: url(https://upload.wikimedia.org/wikipedia/commons/d/dd/Square_-_black_simple.svg);
+            }
+            .apskritimas {
+                background-image: url(https://upload.wikimedia.org/wikipedia/commons/a/a0/Circle_-_black_simple.svg);
+            }
+            .klase {
+                height:100px;
+                width:100px;
+                background-size: cover;
+            }
+        </style>
         <title>
 
         </title>
     </head>
     <body>
-        <div class="paveiksliukas <?php print $class; ?>"></div>
-        <p><?php print $text; ?></p>
+        <div class="klase <?php print $a; ?>"><?php print date('s') ?></div>
+
     </body>
 </html>
