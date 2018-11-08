@@ -1,25 +1,28 @@
 <?php
-date_default_timezone_set('Europe/Vilnius');
+$months = 12;
+$starting_money = 1000;
+$alga = 700;
+$likutis = $starting_money;
+$visosislaidos = 0;
+for ($i = 1; $i < $months; $i++) {
 
-$kiek_isgerei = rand(1, 8);
-$barnio_riba = rand(1, 4);
-$bokalai = $kiek_isgerei - $barnio_riba;
-if ($kiek_isgerei > $barnio_riba) {
-    $bokalai = "Žmona barsis, nes išgėrei " . $bokalai . " bokalais per daug.";
-} else {
-    $bokalai = "Žmona nesibars. Šiandien galėjai išgerti dar " . abs($bokalai) . " bokalus";
+    $islaidos = rand(200, 350);
+    $visosislaidos += $islaidos;
+    $likutis += $alga - $islaidos;
+    if ($likutis < 0) {
+        break;
+    }
 }
+$vidutinesislaidos = round($visosislaidos / $months);
+$skaiciavimai = "Per $months Prognozuotų mėnesių, vidutinės išlaidos: " . $vidutinesislaidos . " Likutis pabaigoje $likutis";
 ?>
-<html>
+<html
     <head>
         <style>
-
+            //Here we write the motherfucking style blyat
         </style>
-        <title>
-
-        </title>
     </head>
     <body>
-        <h1><?php print $bokalai ?></h1>
+        <p><?php print $skaiciavimai; ?></p>
     </body>
 </html>
