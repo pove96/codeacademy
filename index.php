@@ -1,11 +1,17 @@
 <?php
 $fridge = ['Jogurtas', 'Alus',
     'bananas', 'apelsinas', 'kiaušai'];
-$bbd = 'Šaldytuvo turinys: ';
-$indexas = rand(0, count($fridge) - 1);
-$produktas = $fridge[$indexas];
-foreach ($fridge as $value) {
-    $bbd .= $value . "<br>";
+$noriu = ['Kebabas', 'Alus', 'Pica'];
+$tekstas = " ";
+
+foreach ($noriu as $produktas) {
+    $radau = in_array($produktas, $fridge);
+
+    if ($radau) {
+        $tekstas .= "<br> As turiu " . $produktas;
+    } else {
+        $tekstas .= "<br> Neturiu " . $produktas;
+    }
 }
 ?>
 <html>
@@ -15,8 +21,7 @@ foreach ($fridge as $value) {
         </style>
     </head>
     <body>
-        <h1><?php print $bbd ?> </h1>
-        <h2>Šiandien turbūt valgysiu: </h2>
-        <p><?php print $produktas ?> </p>
+        <h3>Ar viską turiu šaldytuve?</h3>
+        <p><?php print $tekstas ?></p>
     </body>
 </html>
