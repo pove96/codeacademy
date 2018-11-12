@@ -4,14 +4,13 @@ $fridge = ['Jogurtas', 'Alus',
 $noriu = ['Kebabas', 'Alus', 'Pica'];
 $tekstas = " ";
 
-foreach ($noriu as $produktas) {
-    $radau = in_array($produktas, $fridge);
-
-    if ($radau) {
-        $tekstas .= "<br> As turiu " . $produktas;
-    } else {
-        $tekstas .= "<br> Neturiu " . $produktas;
+foreach ($fridge as $key => $reiksme) {
+    if (in_array($reiksme, $noriu)) {
+        unset($fridge[$key]);
     }
+}
+foreach ($fridge as $reiksme) {
+    print $reiksme . "<br>";
 }
 ?>
 <html>
@@ -21,7 +20,6 @@ foreach ($noriu as $produktas) {
         </style>
     </head>
     <body>
-        <h3>Ar viską turiu šaldytuve?</h3>
-        <p><?php print $tekstas ?></p>
+        <h1>Šaldytuvo turinys po visko:</h1>
     </body>
 </html>
