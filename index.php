@@ -1,8 +1,23 @@
 <?php
-$fridge = ['Kebabas' => '2.50', 'Alus' => '1.89', 'Burokai' => '1.50'];
-$indeksai = array_keys($fridge);
-$produkto_indekso_indeksas = rand(0, count($indeksai) - 1);
-$produkto_indeksas = $indeksai[$produkto_indekso_indeksas];
+$catalog = [
+    'kiausiniai' => [
+        'pavadinimas' => "kiausiniai",
+        'kaina' => 3.5,
+        'aprasymas' => "ziauriai geri kiausiniai",
+        'nuolaida' => "15%",
+    ],
+    'pica' => [
+        'pavadinimas' => "pica",
+        'kaina' => 7,
+        'aprasymas' => "ziauriai gera pica",
+    ],
+    'sunio kebabai' => [
+        'pavadinimas' => "sunio kebabai",
+        'kaina' => 3,
+        'aprasymas' => "geriau nevalgyk blet",
+        'nuolaida' => "50%"
+    ]
+];
 ?>
 <html>
     <head>
@@ -12,22 +27,18 @@ $produkto_indeksas = $indeksai[$produkto_indekso_indeksas];
                 height: 100px;
                 background-size: cover;
             }
-            .Kebabas {
-                background-image: url(http://www.snackcity.lt/UserFiles/image/kebabai/liux-kebabas1.png);
-            }
-            .Alus {
-                background-image: url(https://www.barbora.lt/api/Images/GetInventoryImage?id=745450b8-147c-46e9-9870-90af17d7d5e6);
-            }
-            .Burokai {
-                background-image: url(http://lsveikata.lt/upload/articles_images/5679/def/burokai.jpg);
-            }
 
         </style>
     </head>
     <body>
-        <h2>Kazkada pirkai:</h2> 
-        <?php foreach ($fridge as $key => $produkto_kaina): ?>
-            <div class="<?php print $key ?>"><?php print $produkto_kaina ?></div>
+        <?php foreach ($catalog as $key => $produktas): ?>
+            <div class="produktas"><?php print $produktas['pavadinimas'] ?></div>
+            <span class="pavadinimas"><?php print $produktas['pavadinimas'] ?></span>
+            <span class="kaina"><?php print $produktas['kaina'] ?></span>
+            <span class="aprasymas"><?php print $produktas['aprasymas'] ?></span>
+            <?php if (isset($produktas['nuolaida'])): ?>
+                <span class="nuolaida"><?php print $produktas['nuolaida'] ?> </span>
+            <?php endif; ?>
         <?php endforeach; ?>
     </body>
 </html>
