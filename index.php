@@ -1,44 +1,44 @@
 <?php
-$cars_array = [
-    'Fiat Multipla' => [
-        'pavadinimas' => 'Fiat Multipla',
-        'kaina' => '420'
+$drinks = [
+    'Vodka' => [
+        'pavadinimas' => 'Vodka',
+        'turis_litrais' => 0.7,
+        'prom' => 40
     ],
-    'Audi 80' => [
-        'pavadinimas' => 'Audi 80',
-        'kaina' => '169'
+    'Alus' => [
+        'pavadinimas' => 'Alus',
+        'turis_litrais' => 0.5,
+        'prom' => 4.5
     ]
 ];
 
 /**
- * Funkcija, kuri priima automobilių masyvą ir priklausomai nuo pardavimų kainos,
- * kuri yra atsitiktinai suskaičiuota, grąžina papildomus elementus masyve, už
- * kiek ta mašina buvo parduota ir ar apsimokėjo.
+ * Funkcija, kuri skaičiuoja, kiek butelių galima išgerti, kol gryno
+ * alkoholio kiekis neviršys tam tikro kiekio litrais.
  * 
- * @return integer $cars_array Gražinam cars_array masyvą
+ * @param array $drinks Gėrimų masyvas su pavadinimais, tūriu bei promilėmis.<br>
+ * $arr[0]<br>
+ *      ['pavadinimas'] = 'Vodke';<br>
+ *      ['prom'] = 40;<br>
+ * 
+ * @param real $max_level Maksimalus alokoholio kiekis, kiek gali išgerti.
+ * @return array $drinks Gražiname $drinks masyvą.
  */
-function sell_cars($cars_array) {
-    //Ciklas, kuris pereina per visus automobilius ir jų informaciją
-    foreach ($cars_array as $idx => $car_info) {
-        //Paskaiciuojam ar pardavimo kaina +30% ar -30%
-        $sell_price_min = $car_info['kaina'] * 0.7;
-        $sell_price_max = $car_info['kaina'] * 1.3;
-        //Kiekvieną kartą vykdomas ciklas sugeneruoja atsitiktinę kainą [+-30%]
-        $car_info['pard_kaina'] = rand($sell_price_min, $sell_price_max);
-        //Tikriname ar pardavimo kaina yra daugiau už pradinę automobilio kainą
-        if ($car_info['pard_kaina'] > $car_info['kaina']) {
-            $car_info['varke'] = " Taip, apsimokėjo";
-        } else {
-            $car_info['varke'] = " Ne, neapsimokėjo";
-        }
-        //Į tą patį masyvą įtraukiame naują automobilio pardavimo kainą
-        $cars_array[$idx] = $car_info;
+function drinks($drinks, $max_level) {
+    //Ciklas, kuris pereina per visas gėrimų rūšis
+    foreach ($drinks as $idx => $drink_info) {
+        //Paskaičiuojame alkoholio kiekį
+        $alcohol_quantity = $drink_info['turis_litrais'] * $drink_info['prom'] / 100;
+        //Surandame kiek butelių galima išgerti
+        $bonkiu_skaicius = $max_level / $alcohol_quantity;
+        //Prie esamo masyvo pridedame naują bonkių skaičiaus informaciją
+        $drink_info['Bonkiu_skaicius'] = floor($bonkiu_skaicius);
+        $drinks[$idx] = $drink_info;
     }
-    return $cars_array;
+    return $drinks;
 }
 
-$cars_array = sell_cars($cars_array);
-var_dump($cars_array);
+var_dump(drinks($drinks, 0.4));
 ?>
 <!DOCTYPE html>
 <html>
