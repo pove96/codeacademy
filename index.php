@@ -1,4 +1,5 @@
 <?php
+include 'database.php';
 
 class Girl {
 
@@ -90,18 +91,16 @@ class UglyGirl extends Girl {
 //-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------
 class Tinder {
 
-    const COOKIE_NAME = 'tinder';
-
     private $girls;
     private $viewed;
     private $matches;
-    private $dismatches; //nereikia sito sudo
+    public $db; //
 
     public function __construct() {
         $this->girls = [];
         $this->viewed = [];
         $this->matches = [];
-        $this->dismatches = []; //nereikia sito sudo
+        $this->db = new Database('naujasfailas.txt'); //initializinam database
     }
 
     //Adds new girl to the array
@@ -143,40 +142,37 @@ class Tinder {
         return $this->matches;
     }
 
-    //Load the data from cookies
-    public function dataLoad() {
-        $data = $_COOKIE[self::COOKIE_NAME] ?? false;
-
-        if ($data) {
-            $data = unserialize($data);
-            $this->viewed = $data['viewed'] ?? [];
-            $this->matches = $data['matches'] ?? [];
-        }
+    //Load the data from a file
+    public function load() {
+        $data = $this->db->load();
+        
+        $this->viewed = $data['viewed'] ?? [];
+        $this->matches = $data['matches'] ?? [];
     }
 
 //Save data to cookies
-    public function dataSave() {
+    public function save() {
         $data = [
             'viewed' => $this->viewed,
             'matches' => $this->matches
-                //...
         ];
-        setcookie(self::COOKIE_NAME, serialize($data), time() + (9987 * 40), '/');
+        $this->db->save($data);
     }
 
-    public function dataClear() {
-        setcookie(self::COOKIE_NAME, '', time() - 3600, '/');
+    public function delete() {
+        $this->db->delete();
     }
 
 }
 
+// Kuriam naujas bobas
 $tinder = new Tinder();
 $tinder->girlAdd(new SexyGirl('Kristina', '21', 'ciolka69duodupyst@gmail.com', 'https://thephotostudio.com.au/wp-content/uploads/2017/10/Emily-Ratajkowski-1.jpg'));
 $tinder->girlAdd(new UglyGirl('Karolina', '22', 'Karolina@gmail.com', 'https://www.piedfeed.com/wp-content/uploads/2017/07/hannah-davis-sports-illustrated-2014-swimsuit-issue-part-2-_25.jpg'));
 $tinder->girlAdd(new UglyGirl('Sandra', '23', 'sirdyjauna@inbox.lt', 'http://cdn.shopify.com/s/files/1/2999/4578/products/HTB12Tkvd8TH8KJjy0Fiq6ARsXXaQ_1024x1024.jpg?v=1524823949'));
-$tinder->dataLoad();
+$tinder->load();
 
-//Form actions starts herei
+//Form actions starts here
 $action = $_POST['action'] ?? false;
 if ($action) {
     if (in_array($action, ['like', 'dislike'])) {
@@ -184,14 +180,14 @@ if ($action) {
             $tinder->girlLike();
         }
         $viewed_girl = $tinder->girlViewNext();
-        $tinder->dataSave();
+        $tinder->save();
     }
 } else {
     $viewed_girl = $tinder->girlViewLast();
 }
 
 if (!$viewed_girl) {
-    $tinder->dataClear();
+    $tinder->delete();
 }
 ?>
 
@@ -208,12 +204,12 @@ if (!$viewed_girl) {
     </style>
 
     <body>
-        <?php if ($viewed_girl): ?>
+<?php if ($viewed_girl): ?>
 
             <form action="index.php" method="POST">
                 <img src="<?php print $viewed_girl->getPhoto() ?>" class="bobos">
                 <br>
-                <?php print $viewed_girl->getName() . $viewed_girl->getAge() ?>
+    <?php print $viewed_girl->getName() . $viewed_girl->getAge() ?>
                 <br>
                 <button name="action" value="like">Like</button>
                 <button name="action" value="dislike">Dislike</button>
@@ -222,11 +218,11 @@ if (!$viewed_girl) {
             <h1>You are single.</h1>
         <?php endif; ?>
         <h1>Matches:</h1>
-        <?php foreach ($tinder->getMatches() as $girl): ?>
+            <?php foreach ($tinder->getMatches() as $girl): ?>
             <div class="match">
                 <img src="<?php print $girl->getPhoto() ?>" class="bobos"> <br>
-                <?php print $girl->getName(); ?>
+            <?php print $girl->getName(); ?>
             </div>
-        <?php endforeach; ?>
+<?php endforeach; ?>
     </body>
 </html>
