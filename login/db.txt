@@ -1,0 +1,1 @@
+a:1:{s:5:"users";a:4:{s:5:"email";a:2:{s:8:"password";s:8:"password";s:9:"full_name";s:9:"full_name";}i:123;a:2:{s:8:"password";s:3:"456";s:9:"full_name";s:3:"789";}s:13:"test@test.com";a:2:{s:8:"password";s:3:"abc";s:9:"full_name";s:3:"abc";}s:19:"sleivys.p@gmail.com";a:2:{s:8:"password";s:6:"123456";s:9:"full_name";s:7:"Povilas";}}}
