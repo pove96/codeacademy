@@ -1,228 +1,176 @@
 <?php
-include 'database.php';
+require('tinder/classes/Database.php');
+require('tinder/classes/Model.php');
+require('tinder/classes/abstracts/AbstractUser.php');
+require('tinder/classes/User.php');
+require('tinder/classes/UserRepository.php');
+require('tinder/classes/Session.php');
 
-class Girl {
+$db = new Database('db.txt');
 
-    private $vardas;
-    private $amzius;
-    private $email;
-    private $nuotrauka;
+$repository = new UserRepository($db); // i repozitorija paduodi database
+$session = new Session($repository); // o i database paduodi repozitorija
 
-    public function __construct($vardas, $amzius, $email, $nuotrauka) {
-        $this->vardas = $vardas;
-        $this->amzius = $amzius;
-        $this->email = $email;
-        $this->nuotrauka = $nuotrauka;
-    }
-
-    public function tryMatch() {
-        return rand(0, 1);
-    }
-
-    public function getName() {
-        return $this->vardas;
-    }
-
-    public function setName($vardas) {
-        $this->vardas = $vardas;
-    }
-
-    public function getAge() {
-        return $this->amzius;
-    }
-
-    public function setAge($amzius) {
-        $this->amzius = $amzius;
-    }
-
-    public function getEmail() {
-        return $this->email;
-    }
-
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-
-    public function getPhoto() {
-        return $this->nuotrauka;
-    }
-
-    public function setPhoto($nuotrauka) {
-        $this->nuotrauka = $nuotrauka;
-    }
-
-    public function getAll() {
-        return [
-            'name' => $this->vardas,
-            'amzius' => $this->amzius,
-            'email' => $this->email,
-            'nuotrauka' => $this->nuotrauka
-        ];
-    }
-
-}
-
-class SexyGirl extends Girl {
-
-    function tryMatch() {
-        $sexy = rand(0, 3);
-        if ($sexy > 2) {
-            return true;
-        }
-        //tikimybe turi but mazesne
-    }
-
-}
-
-class UglyGirl extends Girl {
-
-    function tryMatch() {
-        $ugly = rand(0, 100);
-        if ($ugly < 75) {
-            return true;
-        } else {
-            return false;
-        }
-        // tikimybe turi but didesne
-    }
-
-}
-
-//-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------Class Girl Ends Here-----------
-class Tinder {
-
-    private $girls;
-    private $viewed;
-    private $matches;
-    public $db; //
-
-    public function __construct() {
-        $this->girls = [];
-        $this->viewed = [];
-        $this->matches = [];
-        $this->db = new Database('naujasfailas.txt'); //initializinam database
-    }
-
-    //Adds new girl to the array
-    public function girlAdd(Girl $girl) {
-        $this->girls[] = $girl;
-    }
-
-    //View last girl you have seen (if no botton pressed return same girl)
-    /**
-     * 
-     * @return Girl
-     */
-    public function girlViewLast() {
-        if (empty($this->viewed)) {
-            return $this->girlViewNext();
-        } else {
-            return end($this->viewed);
-        }
-    }
-
-    //View next girl
-    public function girlViewNext() {
-        foreach ($this->girls as $girl) {
-            if (!in_array($girl, $this->viewed)) {
-                $this->viewed[] = $girl;
-                return $girl;
+$action = $_POST['action'] ?? false; // Pracheckina ar vapse kazkoks actionas buvo atliktas
+if ($action) {
+    if ($action == 'register') {
+        if (!empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['full_name'])) {
+            if ($_POST['password'] == $_POST['confirm_password']) {
+                $data = [
+                    'fullname' => $_POST['full_name'],
+                    'age' => $_POST['Age'],
+                    'gender' => $_POST['Gender']
+                ];
+                $session->register($_POST['email'], $_POST['password'], $data);
+            } else {
+                print "Slaptazodziai nesutampa";
             }
         }
     }
-
-    public function girlLike() {
-        $girl = $this->girlViewLast();
-        if ($girl->tryMatch()) {
-            $this->matches[] = $girl;
+    if ($action == 'login') {
+        if (!empty($_POST['email']) && !empty($_POST['password'])) {
+            $session->login($_POST['email'], $_POST['password']);
         }
     }
-
-    public function getMatches() {
-        return $this->matches;
+    if ($action == 'logout') {
+        $session->logout();
     }
-
-    //Load the data from a file
-    public function load() {
-        $data = $this->db->load();
-        
-        $this->viewed = $data['viewed'] ?? [];
-        $this->matches = $data['matches'] ?? [];
-    }
-
-//Save data to cookies
-    public function save() {
-        $data = [
-            'viewed' => $this->viewed,
-            'matches' => $this->matches
-        ];
-        $this->db->save($data);
-    }
-
-    public function delete() {
-        $this->db->delete();
-    }
-
-}
-
-// Kuriam naujas bobas
-$tinder = new Tinder();
-$tinder->girlAdd(new SexyGirl('Kristina', '21', 'ciolka69duodupyst@gmail.com', 'https://thephotostudio.com.au/wp-content/uploads/2017/10/Emily-Ratajkowski-1.jpg'));
-$tinder->girlAdd(new UglyGirl('Karolina', '22', 'Karolina@gmail.com', 'https://www.piedfeed.com/wp-content/uploads/2017/07/hannah-davis-sports-illustrated-2014-swimsuit-issue-part-2-_25.jpg'));
-$tinder->girlAdd(new UglyGirl('Sandra', '23', 'sirdyjauna@inbox.lt', 'http://cdn.shopify.com/s/files/1/2999/4578/products/HTB12Tkvd8TH8KJjy0Fiq6ARsXXaQ_1024x1024.jpg?v=1524823949'));
-$tinder->load();
-
-//Form actions starts here
-$action = $_POST['action'] ?? false;
-if ($action) {
-    if (in_array($action, ['like', 'dislike'])) {
-        if ($action == 'like') {
-            $tinder->girlLike();
-        }
-        $viewed_girl = $tinder->girlViewNext();
-        $tinder->save();
-    }
-} else {
-    $viewed_girl = $tinder->girlViewLast();
-}
-
-if (!$viewed_girl) {
-    $tinder->delete();
 }
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
+        <style>
+            .formu_centravimas {
+                text-align: center;
+            }
+            form {
+                position: relative;
+                z-index: 1;
+                background: #FFFFFF;
+                max-width: 360px;
+                margin: 0 auto 100px;
+                padding: 40px;
+                text-align: center;
+                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            }
+            button {
 
+                text-transform: uppercase;
+                background: #4CAF50;
+                width: 60%;
+                border: 0;
+                padding: 15px;
+                color: #FFFFFF;
+                font-size: 14px;
+                cursor: pointer;
+                font-family: "Courier New", Courier, monospace;
+            }
+            body {
+                background: #76b852;
+            }
+            h1 {
+                font-family: "Courier New", Courier, monospace;
+            }
+            input {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 4px 0;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+            select {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 4px 0;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+            input[type="password"], input[type="confirm_password"]
+            {
+                -webkit-text-security: disc;
+            }
+            p {
+                font-family: "Courier New", Courier, monospace;
+                text-align: left;
+            }
+            input[type="file"]
+            {
+                width: 80%;
+                padding: 12px 20px;
+                margin: 4px 0;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                display: none;
+            }
+            .prideti_nuotrauka {
+                text-transform: uppercase;
+                background: #FFFFFF;
+                width: 100%;
+                border: 0;
+                padding: 5px;
+                color: #4CAF50;
+                font-size: 14px;
+                cursor: pointer;
+                font-family: "Courier New", Courier, monospace;
+            }
+
+
+        </style>
     </head>
-    <style>
-        .bobos {
-            background-size: cover;
-            height: 300px;
-            width: 300px;
-        }
-    </style>
-
     <body>
-<?php if ($viewed_girl): ?>
-
-            <form action="index.php" method="POST">
-                <img src="<?php print $viewed_girl->getPhoto() ?>" class="bobos">
-                <br>
-    <?php print $viewed_girl->getName() . $viewed_girl->getAge() ?>
-                <br>
-                <button name="action" value="like">Like</button>
-                <button name="action" value="dislike">Dislike</button>
-            </form>
-        <?php else: ?>
-            <h1>You are single.</h1>
+        <?php if ($session->registrationSuccessful()): ?>
+            <h1>Registracija sėkminga</h1>
         <?php endif; ?>
-        <h1>Matches:</h1>
-            <?php foreach ($tinder->getMatches() as $girl): ?>
-            <div class="match">
-                <img src="<?php print $girl->getPhoto() ?>" class="bobos"> <br>
-            <?php print $girl->getName(); ?>
-            </div>
-<?php endforeach; ?>
+        <?php if (!$session->isLoggedIn()): ?>
+
+            <form class ="formu_centravimas" id="LoginForm" method="post" action="index.php">
+                <h1>Login Here!</h1>
+                <input type="text" placeholder="Email@email.com" name="email" autofocus /> <br>
+                <input type="password" placeholder="Password" name="password"/> <br> <br>
+                <button name="action" value="login">Login Now!</button>
+                <button onclick="hideForm(); return false;">Don't have an account?</button>
+            </form>
+            <div id="hideRegister">
+                <form class ="formu_centravimas" id="RegisterForm" method="post" action="index.php">
+                    <h1>Register here!</h1>
+                    <input type="text" placeholder="Email@email.com" name="email" autofocus /> <br>
+                    <input type="password" placeholder="Password" name="password"/> <br>
+                    <input type="confirm_password" placeholder="Confirm Password" name="confirm_password"/> <br>
+                    <input type="text" placeholder="Full Name" name="full_name"/><br>
+                    <input type="text" placeholder="Age" name="Age"/><br>
+                    <select name="Gender"> <br>
+                        <option value="male" name="Gender">Male</option>
+                        <option value="female" name="Gender">Female</option>
+                    </select>
+                    <br> <br>
+
+                    <input type="file" id="file" accept="image/*"/>
+                    <label class="prideti_nuotrauka" for="file">Press here to select your profile picture</label><br> <br>
+
+                    <button name="action" value="register">Register Now!</button><br>
+                </form>
+            <?php endif; ?>
+        </div>
+        <?php if ($session->isLoggedIn()): ?>
+            <form id="LogoutForm" method="post" action="index.php">
+                <h1>You are logged in!</h1>
+                <button name="action" value="logout">Logout!</button>
+            </form>
+        <?php endif; ?>
+
+
+
+        <!--JS for form hiding-->
+        <script>
+            function hideForm() {
+                var x = document.getElementById("hideRegister");
+                if (x.style.display === "block") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>

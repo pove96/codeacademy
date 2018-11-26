@@ -1,6 +1,5 @@
 <?php
-
-class Model {
+ class Model {
     
     private $db;
     private $table_name;
@@ -24,9 +23,14 @@ class Model {
         return $record;
     }
     
-    public function delete() {
+    public function delete($id) {
         $data = $this->db->load();
         unset($data[$this->table_name][$id]);
         $this->db->save($data);
+    }
+    
+    public function loadAll() {
+        $data = $this->db->load();
+        return $data[$this->table_name] ?? null;
     }
 }
