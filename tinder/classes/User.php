@@ -24,4 +24,12 @@ class User {
         return $this->data;
     }
 
+    public function setDataItem($data_idx, $data_value) {
+        $this->data[$data_idx] = $data_value;
+    }
+
+    public function getDataItem($data_idx) {
+        return $this->data[$data_idx] ?? null;
+    }
+
 }

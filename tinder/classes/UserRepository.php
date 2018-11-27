@@ -32,4 +32,8 @@ class UserRepository {
         $this->model->delete($email);
     }
 
+    public function updateUser(User $user) {
+        $this->model->insertOrUpdate($user->getEmail(), $user);
+    }
+
 }

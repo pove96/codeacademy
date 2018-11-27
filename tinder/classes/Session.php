@@ -51,8 +51,16 @@ class Session {
             $this->registrationsuccessful = false;
         }
     }
-    
+
     public function registrationSuccessful() {
         return $this->registrationsuccessful;
     }
+
+    public function getCurrentUser() {
+        if ($this->isLoggedIn()) {
+            $current_user = $this->userrepository->loadUser($_SESSION['email']);
+            return $current_user;
+        } 
+    } 
+
 }
