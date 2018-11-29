@@ -8,32 +8,55 @@
 
 class UserRepository {
 
-    private $db;
-    private $model;
+    protected $db;
+    protected $model;
 
-    public function __construct(Database $db) {
+    public function __construct(MysqlDatabase $db) {
         $this->db = $db;
-        $this->model = new Model($db, 'users');
+        $this->model = new ModelUsers($db, 'users');
     }
 
-    public function loadAllUsers() {
-        return $this->model->loadAll();
+    public function add(User $user) {
+        $this->model->insert(
+                $user->getEmail(), $user->getData()
+        );
     }
 
-    public function loadUser($email) {
-        return $this->model->load($email);
+    public function load($email) {
+        $data = $this->model->load($email);
+        if ($data) {
+            return new User($email, $data);
+        } else {
+            return null;
+        }
+        return $data ? new User($email, $data) : null;
     }
 
-    public function addUser(User $user) {
-        $this->model->insertOrUpdate($user->getEmail(), $user);
+    public function loadAll() {
+        $user = [];
+        $data_arr = $this->model->loadAll();
+        foreach ($data_arr as $user_data) {
+            $email = $user_data['email'];
+            $users[$email] = new User($email, $user_data);
+        }
+        // Useriu array
+        // Arrayjaus elementas - User klases instancija (objektas)
+        return $users;
     }
 
-    public function deleteUser($email) {
-        $this->model->delete($email);
+    public function update(User $user) {
+        $data = [];
+
+
+        $this->model->insertOrUpdate($user->getEmail(), $user->getData());
     }
 
-    public function updateUser(User $user) {
-        $this->model->insertOrUpdate($user->getEmail(), $user);
+    public function delete(User $user) {
+        $this->model->delete($user->getEmail());
+    }
+
+    public function deleteAll() {
+        $this->model->deleteAll();
     }
 
 }

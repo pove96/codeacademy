@@ -6,12 +6,12 @@ class Session {
      *
      * @var UserRepository
      */
-    private $userrepository;
+    private $user_repo;
     private $is_logged_in;
-    private $registrationsuccessful;
+    private $register_success;
 
     public function __construct(UserRepository $repo) {
-        $this->userrepository = $repo;
+        $this->user_repo = $repo;
         session_start();
         $this->is_logged_in = $_SESSION['logged_in'] ?? false;
     }
@@ -21,7 +21,7 @@ class Session {
     }
 
     public function login($email, $password) {
-        $user = $this->userrepository->loadUser($email);
+        $user = $this->user_repo->load($email);
         if ($user) {
             if ($user->getPassword() == $password) {
                 $this->is_logged_in = true;
@@ -43,22 +43,23 @@ class Session {
     }
 
     public function register($email, $password, $data) {
-        if (!$this->userrepository->loadUser($email)) {
-            $newuser = new User($email, $password, $data);
-            $this->userrepository->addUser($newuser);
-            $this->registrationsuccessful = true;
+        if (!$this->user_repo->load($email)) {
+            $new_user = new User($email, $data);
+            $new_user->setPassword($password);
+            $this->user_repo->add($new_user);
+            $this->register_success = true;
         } else {
-            $this->registrationsuccessful = false;
+            $this->register_success = false;
         }
     }
 
-    public function registrationSuccessful() {
-        return $this->registrationsuccessful;
+    public function isRegistrationSuccessful() {
+        return $this->register_success;
     }
 
     public function getCurrentUser() {
         if ($this->isLoggedIn()) {
-            $current_user = $this->userrepository->loadUser($_SESSION['email']);
+            $current_user = $this->user_repo->load($_SESSION['email']);
             return $current_user;
         } 
     } 

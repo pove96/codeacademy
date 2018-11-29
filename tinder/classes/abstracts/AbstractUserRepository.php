@@ -12,13 +12,13 @@
  * @author CodeAcademy
  */
 abstract class AbstractUserRepository {
-    
+
     /**
      * Database class instance
      * @var Datbase
      */
     protected $db;
-    
+
     /**
      * Model instance of the user table(model)
      * @var Model
@@ -31,7 +31,7 @@ abstract class AbstractUserRepository {
     }
 
     abstract public function add(User $user);
-    
+
     /**
      * #1 Loads user data from the database via model
      * #2 Creates a User instance from that data
