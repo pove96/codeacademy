@@ -1,16 +1,16 @@
 <?php
 define('DEBUG', true);
 
-require('functions/core.php');
-require('classes/MysqlDatabase.php');
-require('classes/SQLBuilder.php');
-require('classes/abstracts/Model.php');
-require('classes/User.php');
-require('classes/UserRepository.php');
-require('classes/Session.php');
-require('classes/Tinder.php');
-require('classes/models/ModelUsers.php');
-require('classes/models/ModelTinderData.php');
+require('tinder/functions/core.php');
+require('tinder/classes/MysqlDatabase.php');
+require('tinder/classes/SQLBuilder.php');
+require('tinder/classes/abstracts/Model.php');
+require('tinder/classes/User.php');
+require('tinder/classes/UserRepository.php');
+require('tinder/classes/Session.php');
+require('tinder/classes/Tinder.php');
+require('tinder/classes/models/ModelUsers.php');
+require('tinder/classes/models/ModelTinderData.php');
 
 $db = new MysqlDatabase('root', '123456', 'localhost', 'tinder');
 $repository = new UserRepository($db); // i repozitorija paduodi database
@@ -31,7 +31,7 @@ if ($action) {
             'email' => FILTER_SANITIZE_EMAIL,
             'password' => FILTER_DEFAULT,
             'confirm_password' => FILTER_DEFAULT,
-            'full_name' => FILTER_SANITIZE_STRING,
+            'full_name' => FILTER_SANITIZE_ENCODED,
             'age' => FILTER_SANITIZE_NUMBER_INT,
             'gender' => FILTER_SANITIZE_STRING
         ]);
@@ -130,7 +130,7 @@ if ($session->isLoggedIn()) {
                 $tinder->userDislike();
                 break;
         }
-
+        
 
 
         // If either like or dislike was pressed, load next
@@ -143,6 +143,7 @@ if ($session->isLoggedIn()) {
     // Load matches
     $page['matches'] = $tinder->getMatches();
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -153,97 +154,97 @@ if ($session->isLoggedIn()) {
     </head>
     <body>
         <?php if ($session->isRegistrationSuccessful()): ?>
-        <center><h1>Registracija sėkminga</h1></center>
-    <?php endif; ?>
+            <h1>Registracija sėkminga</h1>
+        <?php endif; ?>
 
-    <?php if (!empty($page['form_errors'])): ?>
-        <!-- FORM ERRORS -->
-        <div class="form-errors">
-            <?php foreach ($page['form_errors'] as $error): ?>
-                <span class="error"><?php print $error ?></span>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+        <?php if (!empty($page['form_errors'])): ?>
+            <!-- FORM ERRORS -->
+            <div class="form-errors">
+                <?php foreach ($page['form_errors'] as $error): ?>
+                    <span class="error"><?php print $error ?></span>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!$session->isLoggedIn()): ?>
-        <!-- LOGIN FORM -->
-        <form class="formu_centravimas" id="login-form" method="post" action="index.php">
-            <h1>Login Here!</h1>
-            <input type="text" placeholder="Email@email.com" name="email" autofocus />
-            <input type="password" placeholder="Password" name="password"/>
-            <button class="button submit" name="action" value="login">Login Now!</button>
-            <button class="button redirect" id="show-register-form">Don't have an account?</button>
-        </form>
-
-        <!-- REGISTER FORM -->
-        <form class="formu_centravimas hidden" id="register-form" enctype="multipart/form-data" method="post" action="index.php">
-            <h1>Register here!</h1>
-            <input name="email" type="text" placeholder="Email@email.com" autofocus /> <br>
-            <input name="password" type="password" placeholder="Password"/> <br>
-            <input name="confirm_password" type="password" placeholder="Confirm Password" /> <br>
-            <input name="full_name" type="full_name" placeholder="Full Name"/><br>
-            <input name="age" type="number" min="18" max="120" placeholder="Age" /><br>
-            <select name="gender">
-                <option value="m">Male</option>
-                <option value="f">Female</option>
-            </select>
-            <label>Choose a file to upload:</label>
-            <input name="photo" type="file"/>
-            <button class="button submit" name="action" value="register">Register Now!</button>
-            <button class="button redirect" id="show-login-form">Already have an account?</button>
-        </form>
-    <?php endif; ?>
-
-    <?php if ($session->isLoggedIn()): ?>
-        <!-- LOGOUT FORM -->
-        <form id="logout-form" method="post" action="index.php">
-            <h1>Welcome back, <?php print $session->getCurrentUser()->getFullName() ?>!</h1>
-            <button class="button submit" name="action" value="logout">Logout!</button>
-        </form>
-    <?php endif; ?>
-
-    <?php if ($session->isLoggedIn()): ?>
-        <?php if ($page['viewed_user']): ?>
-            <form action="index.php" method="POST">
-                <div class="user-wrapper">
-                    <span class="user-name"><?php print $page['viewed_user']->getFullName(); ?></span>
-                    <span class="user-age"><?php print $page['viewed_user']->getAge(); ?></span>                                        
-                    <img src="<?php print $page['viewed_user']->getPhoto() ?>" class="like-dislike-form-picture">
-                    <button class="button tinder like" name="action" value="like">Like</button>
-                    <button class="button tinder dislike" name="action" value="dislike">Dislike</button>
-                </div>
+        <?php if (!$session->isLoggedIn()): ?>
+            <!-- LOGIN FORM -->
+            <form class="formu_centravimas" id="login-form" method="post" action="index.php">
+                <h1>Login Here!</h1>
+                <input type="text" placeholder="Email@email.com" name="email" autofocus />
+                <input type="password" placeholder="Password" name="password"/>
+                <button name="action" value="login">Login Now!</button>
+                <button id="show-register-form">Don't have an account?</button>
             </form>
-        <?php else: ?>
-            <div class="box">
-                We're out of people :(
-            </div>
+
+            <!-- REGISTER FORM -->
+            <form class="formu_centravimas hidden" id="register-form" enctype="multipart/form-data" method="post" action="index.php">
+                <h1>Register here!</h1>
+                <input name="email" type="text" placeholder="Email@email.com" autofocus /> <br>
+                <input name="password" type="password" placeholder="Password"/> <br>
+                <input name="confirm_password" type="password" placeholder="Confirm Password" /> <br>
+                <input name="full_name" type="full_name" placeholder="Full Name"/><br>
+                <input name="age" type="number" min="18" max="120" placeholder="Age" /><br>
+                <select name="gender">
+                    <option value="m">Male</option>
+                    <option value="f">Female</option>
+                </select>
+                <label>Choose a file to upload:</label>
+                <input name="photo" type="file"/>
+                <button name="action" value="register">Register Now!</button>
+                <button id="show-login-form">Already have an account?</button>
+            </form>
         <?php endif; ?>
 
-        <?php if (!empty($page['matches'])): ?>
-            <div class="matches-wrapper">
-                <h3>You are no longer single! </h3>
-                <h4>Your matches:</h4>
-                <div class="grid-container">
-                    <?php foreach ($page['matches'] as $user): ?>
-                        <div class="match">
-                            <img src="<?php print $user->getDataItem('photo') ?>">
-                            <span class="match-name"><?php print $user->getFullName(); ?></span>
-                            <span class="match-age"><?php print $user->getAge(); ?></span>
-                        </div>
-                    <?php endforeach; ?>      
+        <?php if ($session->isLoggedIn()): ?>
+            <!-- LOGOUT FORM -->
+            <form id="logout-form" method="post" action="index.php">
+                <h1>Welcome back, <?php print $session->getCurrentUser()->getFullName() ?>!</h1>
+                <button name="action" value="logout">Logout!</button>
+            </form>
+        <?php endif; ?>
+
+        <?php if ($session->isLoggedIn()): ?>
+            <?php if ($page['viewed_user']): ?>
+                <form action="index.php" method="POST">
+                    <div class="user-wrapper">
+                        <span class="user-name"><?php print $page['viewed_user']->getFullName(); ?></span>
+                        <span class="user-age"><?php print $page['viewed_user']->getAge(); ?></span>                                        
+                        <img src="<?php print $page['viewed_user']->getPhoto() ?>" class="like-dislike-form-picture">
+                    </div>
+                    <button name="action" value="like">Like</button>
+                    <button name="action" value="dislike">Dislike</button>
+                </form>
+            <?php else: ?>
+                <div class="box">
+                    Bad luck, we're out of people.
                 </div>
-            </div>
-        <?php else: ?>
-            <h3>No matches so far. </h3>
-        <?php endif; ?>
-    <?php endif; ?>
+            <?php endif; ?>
 
-    <!--JS for form hiding-->
-    <script>
-        $('#show-login-form, #show-register-form').on('click', function () {
-            $('#register-form, #login-form').toggleClass('hidden');
-            return false;
-        });
-    </script>
-</body>
+            <?php if (!empty($page['matches'])): ?>
+                <div class="matches-wrapper">
+                    <h3>You are no longer single! </h3>
+                    <h4>Your matches:</h4>
+                    <div class="grid-container">
+                        <?php foreach ($page['matches'] as $user): ?>
+                            <div class="match">
+                                <img src="<?php print $user->getDataItem('photo') ?>">
+                                <span class="match-name"><?php print $user->getFullName(); ?></span>
+                                <span class="match-age"><?php print $user->getAge(); ?></span>
+                            </div>
+                        <?php endforeach; ?>      
+                    </div>
+                </div>
+            <?php else: ?>
+                <h3>No matches so far. </h3>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <!--JS for form hiding-->
+        <script>
+            $('#show-login-form, #show-register-form').on('click', function () {
+                $('#register-form, #login-form').toggleClass('hidden');
+                return false;
+            });
+        </script>
+    </body>
 </html>

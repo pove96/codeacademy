@@ -1,0 +1,81 @@
+html,body {
+    margin: 0;
+    padding: 0;
+}
+.box {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    font-family: verdana;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form-errors {
+    display: inline-block;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    color: red;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    box-shadow: 1px 1px 10px 3px;
+    z-index: 2;
+
+}
+
+.user-wrapper {
+    position: relative;
+}
+
+.user-name, .user-age {
+    position: absolute;
+    padding: 10px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-weight: bold;
+}
+
+.user-name {
+    left: 0;
+}
+
+.user-age {
+    right: 0;
+}
+
+.user-wrapper .button.tinder {
+    position: absolute;
+    bottom: 0;
+    border: 0;
+    color: white;
+    padding: 10px;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.button.tinder.like {
+    left: 0;
+    background: green;
+}
+
+.button.tinder.dislike {
+    right: 0;
+    background: #d12d2d;
+}
+
+.form-errors span {
+    display: block;
+    font-family: verdana;
+    padding: 5px;
+}
+.matches-wrapper {
+    display: block;
+    background: #272727;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}

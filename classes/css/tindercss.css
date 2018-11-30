@@ -1,0 +1,93 @@
+.formu-centravimas {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.submitbuttons {
+    text-transform: uppercase;
+    background: #00A3DA;
+    width: 60%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: "Courier New", Courier, monospace;
+}
+.redirectbuttons {
+    border: none;
+    padding: 0;
+    background: none;
+    font-family: "Courier New", Courier, monospace;
+}
+body {
+    background: url(https://i.imgur.com/NAiqGAB.png) right top no-repeat, url(https://i.imgur.com/NAiqGAB.png) left top no-repeat;
+    background-size: 486px 331px;
+    font-family: "Courier New", Courier, monospace;
+}
+h1 {
+    font-family: "Courier New", Courier, monospace;
+}
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: "Courier New", Courier, monospace;
+}
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: "Courier New", Courier, monospace;
+}
+input[type="password"], input[type="confirm_password"]
+{
+    -webkit-text-security: disc;
+}
+p {
+    font-family: "Courier New", Courier, monospace;
+    text-align: left;
+}
+input[type="file"]
+{
+    width: 80%;
+    padding: 12px 20px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+
+}
+.like-dislike-form-picture {
+    width: 100%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(13, 102.39px);
+    grid-auto-flow: row;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px;
+    padding: 40px; 
+    grid-gap: 120px;
+    margin: 40px;
+}
+
+.grid-container img {
+    width: 200px;
+}

@@ -1,0 +1,27 @@
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    User        getEmail()
+    new User($email, $data)
+    -----------------------
+    UserRepository
+    load($email)
+    ~~~~~~~~~~~~~~~~~~~~
+                       |    new User
+    --------------------------------
+    Session getCurrentUser
+    $email
+    ~~~~~~
+         | UserRepository->Load
+         | User
+    --------------------------------
+    Tinder
+    $this->user - User
