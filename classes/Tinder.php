@@ -64,7 +64,11 @@ class Tinder {
             $this->liked = $this->loadLikedEmails($this->user->getEmail());
         }
     }
-
+    /**
+     * Loads viewed emails from records
+     * 
+     * @return array $viewed
+     */
     public function loadViewedEmails() {
         $viewed_records = $this->modelData->load($this->user->getEmail());
         foreach ($viewed_records as $record) {
@@ -73,7 +77,11 @@ class Tinder {
 
         return $this->viewed;
     }
-
+    /**
+     * Loads last viewed email from records
+     * 
+     * @return string ...
+     */
     public function loadLastViewedEmail() {
         $records = $this->modelData->loadByAction($this->user->getEmail(), '');
         if (!empty($records)) {
@@ -82,7 +90,12 @@ class Tinder {
 
         return null;
     }
-
+    /**
+     * Loads liked emails
+     * 
+     * @param string $email
+     * @return array $emails
+     */
     public function loadLikedEmails($email) {
         $emails = [];
         $liked_records = $this->modelData->loadByAction($email, 'like');

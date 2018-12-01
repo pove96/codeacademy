@@ -1,29 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/*
-  SQLBuilder::column('name');
-  $email = "', '%', 'sdafasdf', 'aaaa');#";
-  INSERT INTO table (`full name`, `email`) VALUES (':full name', ':email');
-
-  WHERE `column`=':column', `column1`=':column1'
-
-  $query->bindValue(':column', 'name');
-  $query->bindValue(':email', 'juozas@duchas.com');
-
-  SQLBuilder::columns(['name', 'email']);
-  SQLBuilder::binds(['name', 'email']);
- * 
- */
-
 /**
  * Description of SQLBuilder
- *
- * @author CodeAcademy
  */
 class SQLBuilder {
 

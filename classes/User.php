@@ -2,25 +2,14 @@
 
 class User {
 
-    /**
-     * User email
-     * @var Email
-     */
     private $email;
-
-    /**
-     *  User data
-     * @var Data
-     */
     private $data;
 
-    // Construct for User class with the 2 parameters
     public function __construct($email, $data) {
         $this->email = $email;
         $this->data = $data;
     }
 
-    // Function to get users email
     public function getEmail() {
         return $this->email;
     }
@@ -41,7 +30,7 @@ class User {
         return $this->getDataItem('full_name');
     }
 
-    // Function to set users full name with index full_name
+    
     public function setFullName($full_name) {
         return $this->setDataItem('full_name', $full_name);
     }
@@ -50,7 +39,7 @@ class User {
         return $this->getDataItem('password');
     }
 
-    // Function to set users password with index password
+    
     public function setPassword($password) {
         return $this->setDataItem('password', $password);
     }
@@ -59,7 +48,7 @@ class User {
         return $this->getDataItem('age');
     }
 
-    // Function to set users age with index age
+    
     public function setAge($age) {
         return $this->setDataItem('age', $age);
     }
@@ -68,19 +57,15 @@ class User {
         return $this->getDataItem('gender');
     }
 
-    // Function to set users gender with index gender
+  
     public function setGender($gender) {
         return $this->setDataItem('gender', $gender);
     }
-    
+
     public function getPhoto() {
         return $this->getDataItem('photo');
     }
-    /**
-     * 
-     * @param type $photo
-     * @return type
-     */
+
     public function setPhoto($photo) {
         return $this->setDataItem('photo', $photo);
     }

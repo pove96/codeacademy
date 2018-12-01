@@ -7,7 +7,15 @@ class Session {
      * @var UserRepository
      */
     private $user_repo;
+    /**
+     *
+     * @var Session
+     */
     private $is_logged_in;
+    /**
+     *
+     * @var UserRepository 
+     */
     private $register_success;
 
     public function __construct(UserRepository $repo) {
@@ -21,11 +29,12 @@ class Session {
     }
     /**
      * Loads user from UserRepository by its email and checks If user
-     * entered password is equal to a password that has been saved - user logs in
+     * entered password is equal to a password that has been saved, if so,
+     * user logs in
      * 
-     * @param type $email
-     * @param type $password
-     * @return boolean
+     * @param string $email
+     * @param string $password
+     * @return boolean success
      */
     public function login($email, $password) {
         $user = $this->user_repo->load($email);
@@ -57,9 +66,9 @@ class Session {
      * add that user to user repository and returns true as a sign of successful
      * registration, if not return false
      * 
-     * @param type $email
-     * @param type $password
-     * @param type $data
+     * @param string $email
+     * @param string $password
+     * @param array $data
      */
     public function register($email, $password, $data) {
         if (!$this->user_repo->load($email)) {
@@ -80,7 +89,7 @@ class Session {
     /**
      * Checks if user is logged in, if so, returns current user.
      * 
-     * @return $current_user
+     * @return string $current_user
      */
     public function getCurrentUser() {
         if ($this->isLoggedIn()) {

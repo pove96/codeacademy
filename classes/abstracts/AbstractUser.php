@@ -4,7 +4,7 @@ abstract class AbstractUser {
 
     protected $is_logged_in;
     protected $db;
-
+    
     public function __construct(Database $db) {
         $this->db = $db;
         $this->is_logged_in = false;

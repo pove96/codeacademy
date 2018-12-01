@@ -22,7 +22,7 @@ $page = [
     'matches' => []
 ];
 
-$action = $_POST['action'] ?? false; // Pracheckina ar vapse kazkoks actionas buvo atliktas
+$action = $_POST['action'] ?? false; // Checks if any action was made
 if ($action) {
     if ($action == 'register') {
         // Filter $_POST array fields to prevent any HTML injection

@@ -17,7 +17,7 @@ class MysqlDatabase {
         $this->conn = null;
         $this->init();
     }
-
+    
     public function connect() {
         if (!$this->conn) {
             $this->conn = new PDO("mysql:host=$this->host", $this->user, $this->pass);

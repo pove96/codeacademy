@@ -2,6 +2,10 @@
 
 class ModelUsers extends Model {
 
+    /**
+     * Creates a new table to the database
+     * @throws Exception
+     */
     public function create() {
         $sql = "CREATE TABLE IF NOT EXISTS $this->table_name (" .
                 "email VARCHAR(249) NOT NULL PRIMARY KEY," .
@@ -21,6 +25,14 @@ class ModelUsers extends Model {
         }
     }
 
+    /**
+     * 
+     * Inserts user with his data to the table
+     * 
+     * @param string $email
+     * @param string $data
+     * @return string lastInsertId()
+     */
     public function insert($email, $data = []) {
         $row = $data;
         $row['email'] = $email;
@@ -40,6 +52,13 @@ class ModelUsers extends Model {
         return $this->db_c->lastInsertId();
     }
 
+    /**
+     * 
+     * Loads user by his email
+     * 
+     * @param string $email
+     * @return array records
+     */
     public function load($email) {
         $sql = strtr('SELECT * FROM @table WHERE @column = @column_bind;', [
             '@table' => $this->table_name,
@@ -54,6 +73,12 @@ class ModelUsers extends Model {
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * 
+     * Loads all user from the table
+     * 
+     * @return array records
+     */
     public function loadAll() {
         $sql = strtr('SELECT * FROM @table', [
             '@table' => $this->table_name
@@ -63,6 +88,14 @@ class ModelUsers extends Model {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * 
+     * Updates user with his data 
+     * 
+     * @param string $email
+     * @param string $data
+     * @return boolean success
+     */
     public function update($email, $data = []) {
 
         $sql = strtr('UPDATE @table SET @column_binds WHERE @column = @column_bind;', [
@@ -82,6 +115,13 @@ class ModelUsers extends Model {
         return $query->execute();
     }
 
+    /**
+     * 
+     * Deletes user from the table
+     * 
+     * @param string $email
+     * @return boolean success
+     */
     public function delete($email) {
         $sql = strtr('DELETE FROM @table WHERE @column = @column_bind;', [
             '@table' => $this->table_name,
